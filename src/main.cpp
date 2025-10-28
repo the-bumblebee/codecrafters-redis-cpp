@@ -60,13 +60,22 @@ int main(int argc, char **argv) {
 
   std::cout << "Client connected\n";
 
-  std::string pong_msg = "+PONG\r\n";
-
   // Handle multiple ping messages by the connected client
+  char buffer[1024] = {0};
+  std::string response ("+PONG\r\n");
   while (true) {
-    char buffer[16] = {0};
-    recv(client_fd, buffer, sizeof(buffer), 0);
-    send(client_fd, pong_msg.c_str(), pong_msg.size(), 0);
+    int bytes_read = recv(client_fd, buffer, sizeof(buffer), 0);
+
+    if (bytes_read < 0) {
+      std::cerr << "Failed to read message.";
+      return 1;
+    }
+
+    std::string request (buffer);
+
+    if (request.find("PING") != std::string::npos) {
+      send(client_fd, response.c_str(), response.size(), 0);
+    }
   }
 
   close(server_fd);
