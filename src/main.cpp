@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
   std::cout << "Client connected\n";
 
   std::string pong_msg = "+PONG\r\n";
-  write(client_fd, (char *)pong_msg.c_str(), strlen((char *)pong_msg.c_str()));
+  send(client_fd, pong_msg.c_str(), pong_msg.size(), 0);
 
   close(server_fd);
 
