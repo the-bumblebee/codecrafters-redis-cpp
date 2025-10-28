@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <string>
 
 int main(int argc, char **argv) {
   // Flush after every std::cout / std::cerr
@@ -50,10 +51,17 @@ int main(int argc, char **argv) {
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   std::cout << "Logs from your program will appear here!\n";
 
-  // Uncomment the code below to pass the first stage
-  // 
-  accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
+  int client_fd = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
+
+  if (client_fd < 0) {
+    std::cerr << "Failed to accept connection.";
+    return 1;
+  }
+
   std::cout << "Client connected\n";
+
+  std::string pong_msg = "+PONG\r\n";
+  write(client_fd, (char *)pong_msg.c_str(), strlen((char *)pong_msg.c_str()));
 
   close(server_fd);
 
