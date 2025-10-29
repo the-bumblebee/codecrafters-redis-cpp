@@ -7,6 +7,7 @@
 # Learn more: https://codecrafters.io/program-interface
 
 set -e # Exit early if any commands fail
+VCPKG_ROOT=${HOME}/Dev/repo/vcpkg
 
 # Copied from .codecrafters/compile.sh
 #
