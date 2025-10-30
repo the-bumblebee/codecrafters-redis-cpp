@@ -7,7 +7,6 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-#include <string>
 #include <sys/poll.h>
 
 #include "resp_util.hpp"
