@@ -1,4 +1,4 @@
-# Handling Multiple Clients
+# Handle Concurrent Clients
 
 This can be done in 2 ways:
 
@@ -18,3 +18,23 @@ This can be done in 2 ways:
 - Use threads for handling sockets instead of the event loop.
 - Make the sockets non-blocking.
 - Use `epoll()` instead of `poll()`.
+
+# Implement ECHO Command
+
+At this stage, the server should support two commands:
+- `PING`
+- `ECHO`
+
+**Note:** Commands are case insensitive.
+
+```sh
+# Input:
+*2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n
+
+#Output:
+$3\r\nhey\r\n
+```
+## Future Considerations
+
+- `RespUtil` class has a single `parse` method which returns the output string based on the input.
+- This is to be refactored into 3 classes - `RespParser`, `RespDispatcher`, `RespSerializer`.
