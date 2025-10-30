@@ -9,7 +9,7 @@
 #include <netdb.h>
 #include <sys/poll.h>
 
-#include "resp.hpp"
+#include "resp_util.hpp"
 
 #define CONNECTION_BACKLOG 5
 #define MAX_CONNECTIONS 20
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
                 }
                 else
                 {
-                    std::string response = RespParser::parse(buffer, bytes_read);
+                    std::string response = RespUtil::parse(buffer, bytes_read);
                     send(fds[i].fd, response.c_str(), response.size(), 0);
                 }
             }
