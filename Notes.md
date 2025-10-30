@@ -38,3 +38,11 @@ $3\r\nhey\r\n
 
 - `RespUtil` class has a single `parse` method which returns the output string based on the input.
 - This is to be refactored into 3 classes - `RespParser`, `RespDispatcher`, `RespSerializer`.
+
+
+# Implementaion Progress
+- Initial socket program (PING command), handles one client and just one message. Blocks on `accept()` and `recv()`.
+- Enhanced with loop for keeping connection alive and stream messages from 1 client. Blocks on `accept()` and `recv()`.
+- Event loop and `poll()` mechanism added to support multiple clients.
+- Added support for ECHO command and added a RespUtil class to handle parsing. But implementation is hard to scale.
+- Major refactoring, RESP library now has 3 classes - `RespParser`, `RespUtil`, `RespSerializer` to handle parsing.
