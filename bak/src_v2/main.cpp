@@ -9,10 +9,7 @@
 #include <netdb.h>
 #include <sys/poll.h>
 
-#include "cache.hpp"
-#include "dispatch/resp_dispatcher.hpp"
-#include "parse/resp_parser.hpp"
-#include "serialize/resp_serializer.hpp"
+#include "resp.hpp"
 
 #define CONNECTION_BACKLOG 5
 #define MAX_CONNECTIONS 20
@@ -22,11 +19,6 @@ int main(int argc, char **argv)
     // Flush after every std::cout / std::cerr
     std::cout << std::unitbuf;
     std::cerr << std::unitbuf;
-
-    Cache cache;
-    RespParser parser;
-    RespDispatcher dispatcher (cache);
-    RespSerializer serializer;
 
     int server_fd = -1, client_fd = -1;
     struct sockaddr_in server_addr{};
@@ -133,17 +125,13 @@ int main(int argc, char **argv)
                     // Close the connection
                     std::cout << "Closing client socket with FD = " << fds[i].fd << std::endl;
                     close(fds[i].fd);
-                    cache.remove_fd(fds[i].fd);
                     fds[i].fd = -1;
                     squeeze_array = true;
                 }
                 else
                 {
-                    ParseResult parse_result = parser.parse(buffer, bytes_read);
-                    Response response = dispatcher.dispatch(client_fd, parse_result);
-                    std::string output = serializer.serialize(response);
-                    // std::string response = RespParser::parse(buffer, bytes_read);
-                    send(fds[i].fd, output.c_str(), output.size(), 0);
+                    std::string response = RespParser::parse(buffer, bytes_read);
+                    send(fds[i].fd, response.c_str(), response.size(), 0);
                 }
             }
         }

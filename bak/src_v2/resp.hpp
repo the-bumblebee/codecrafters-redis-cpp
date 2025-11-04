@@ -9,6 +9,7 @@ class RespParser {
 private:
     static std::string parse_ping(std::istringstream& iss);
     static std::string parse_echo(std::istringstream& iss);
+    static std::string parse_set(std::istringstream& iss);
     inline static std::unordered_map<std::string, std::string(*)(std::istringstream&)> parser_map {
         {"ping", &RespParser::parse_ping},
         {"echo", &RespParser::parse_echo}
